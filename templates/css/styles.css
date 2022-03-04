@@ -1,0 +1,128 @@
+#fundo_modal {
+    width: 100vw;
+	height: 100vh;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	background: rgba(0, 0, 0, 0.3);
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	z-index: 999;
+	overflow: auto;
+    display: flex;
+}
+
+#container_modal{
+    margin: auto;
+    width: 25em;
+    padding: 30px;
+    background-color: #f5f5f5;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .75rem;
+    box-shadow: 0px 0px 2px;
+}
+
+#container_captcha{
+    display: grid;
+    padding: 5px 0px;
+    justify-content: center;
+}
+
+#container_captcha>img{
+    width: 285px;
+    border: 1px solid #a9a2a2;
+}
+
+#container_mensagens{
+    display: flex;
+    justify-content: center;
+}
+
+#container_mensagens>span{
+    color: red;
+    padding: 12px 0px;
+    text-align: center;
+}
+
+.container_campos{
+    /*display: grid;*/
+    display: flex;
+    justify-content: center;
+}
+
+.container_campos>input{
+    width: 285px;
+    height: 35px;
+    padding: 1.525rem .75rem .125rem .75rem;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #a9a2a2;
+    cursor: pointer;
+}
+
+.container_campos>input:focus{
+    padding-top: 1.525rem;
+    padding-bottom: .125rem;
+}
+
+.container_campos>#texto_cnpj{
+    border-radius: 5px 5px 0px 0px;
+}
+
+.container_campos>#texto_captcha{
+    border-radius: 0px 0px 5px 5px;
+}
+
+.container_campos>#texto_cnpj:not(:placeholder-shown)~span,
+.container_campos>#texto_cnpj:focus~span{
+    opacity: .65;
+    transform: scale(.85) translateY(-.5rem) translateX(1rem);
+}
+
+.container_campos>#texto_captcha:not(:placeholder-shown)~span,
+.container_campos>#texto_captcha:focus~span{
+    opacity: .65;
+    transform: scale(.85) translateY(-.5rem) translateX(2rem);
+}
+
+.container_campos>span{
+    position: absolute;
+    /*padding: 1rem .75rem;*/
+    padding: .5rem .75rem;
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: opacity .1s ease-in-out,transform .1s ease-in-out;
+    font-family: system-ui;
+    font-weight: 600;
+}
+
+#container_controles{
+    display: flex;
+    justify-content: center;
+}
+
+#container_controles>button{
+    padding: 4px 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 500;
+    color: #fff;
+    margin: 0px 10px;
+}
+
+#bt_ok_captcha {
+    background-color: #0d6efd;
+}
+
+#bt_recarregar_captcha {
+    background-color: #f78b00;
+}
+
+#bt_cancel_captcha {
+    background-color: #e74c3c;
+}
+
+#request_status>a{
+    color: #337ab7;
+}

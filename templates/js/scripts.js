@@ -5,25 +5,18 @@ const erPont = /\W/igm; // Somente Pontuações/Simbolos.
 let hash_ima;
 let session_key;
 let callback_request;
+let recaptcha;
 
-
-myInterval = setInterval(
-    function () {
-        consultarCnpj('14.554.458/0001-05', function(dados){console.log(dados);})
-        clearInterval(myInterval);
-    }, 
-    3000
-);
 
 function consultarCnpj(cnpj, callback){
     callback_request = callback;
     if (document.querySelector('*[modal-receita]') == null){
-        contruirModal(cnpj);
+        construirModal(cnpj);
     }
     recarregarCaptcha();
 }
 
-function contruirModal(cnpj){
+function construirModal(cnpj){
     let html = `
         <div id="fundo_modal" modal-receita>
             <div id="container_modal">
@@ -57,13 +50,13 @@ function contruirModal(cnpj){
         document.querySelector('body').innerHTML += html;
 }
 
-//const baseurl = 'https://api.github.com/users'
-//const username = 'JEduardoFerreira'
-
-//fetch(`${baseurl}/${username}`).then((response) => response.json()).then((data) => {
-//    console.log(`O usuário ${data.login} tem ${data.public_repos} repositórios públicos.`)
-//}).catch((error) => console.error('Whoops! Erro:', error.message || error))
-
+function recarregarCaptcha(){
+    obterCaptcha();
+    clearTimeout(recaptcha);
+    recaptcha = setTimeout(()=>{recarregarCaptcha();}, 60000); //timeout 1 minuto.
+    document.getElementById('texto_captcha').value = '';
+    document.getElementById('texto_captcha').focus();
+}
 
 function obterCaptcha(){
     $.ajax({
@@ -76,7 +69,7 @@ function obterCaptcha(){
             if (result.status == '200'){
                 hash_ima  = result.hash;
                 session_key = result.session;
-                let captchaUrl = gerarBlobURI(hash_ima);
+                let captchaUrl = gerarURI(hash_ima);
                 document.querySelector('#imagem_captcha').src = captchaUrl;
             }else{
                 document.getElementById('request_status').innerText = `${result.status} - ${result.msg}`;
@@ -104,12 +97,16 @@ function enviarConsulta(cnpj, captcha){
             dataType: "json",
             success: function(result){
                 if (result.status === '200'){
+                    clearTimeout(recaptcha);
+                    document.getElementById('fundo_modal').remove();
                     if (callback_request !== (undefined, null) && typeof callback_request === 'function'){
                         callback_request.call(this, result.dados);
                     }
                 }else if (result.status === '400'){
                     document.getElementById('request_status').innerHTML= `${result.dados.msg_erro} - ${result.dados.ajuda_erro}`;
+                    document.getElementById('texto_captcha').focus();
                 }else{
+                    recarregarCaptcha();
                     document.getElementById('request_status').innerText = `${result.status} - ${result.msg}`;
                 }
             }
@@ -120,16 +117,11 @@ function enviarConsulta(cnpj, captcha){
         }else if(captcha == ''){
             document.getElementById('request_status').innerText = 'Capctha não foi informado!'
         }
+        document.getElementById('texto_captcha').focus();
     }
 }
 
-function recarregarCaptcha(){
-    obterCaptcha();
-    document.getElementById('texto_captcha').value = '';
-    document.getElementById('texto_captcha').focus();
-}
-
-function gerarBlobURI(base64str, type='jpg'){
+function gerarURI(base64str, type='jpg'){
     // decode base64 string, remove space for IE compatibility
     var binary = atob(base64str.replace(/\s/g, ''));
     var len = binary.length;
@@ -210,6 +202,7 @@ $('body').on('click', '#bt_ok_captcha, #bt_recarregar_captcha, #bt_cancel_captch
     }else if (this.id == 'bt_recarregar_captcha'){
         recarregarCaptcha();
     }else if (this.id == 'bt_cancel_captcha'){
+        clearTimeout(recaptcha);
         document.getElementById('fundo_modal').remove();
     }
 });

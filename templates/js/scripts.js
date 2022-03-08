@@ -21,7 +21,7 @@ function construirModal(cnpj){
         <div id="fundo_modal" modal-receita>
             <div id="container_modal">
                 <div class="container_campos">
-                    <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" placeholder=" " value="${cnpj}"/>
+                    <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" placeholder=" " value="${applyMask(cnpj, "cnpj")}"/>
                     <span>CNPJ informado</span>
                 </div>
                 <div id="container_captcha">
@@ -48,6 +48,31 @@ function construirModal(cnpj){
             </div>
         </div>`;
         document.querySelector('body').innerHTML += html;
+}
+
+function exibirResultadoConsulta(dados){
+    let html = '';
+    html += '<div id="fundo_modal_resultado" modal-receita>';
+    html += '    <button id="fechar_modal_resultado"><i>x</i></button>';
+    html += '    <div id="container_modal">';
+    html += '        <ul id="lista_dados_empresa">';
+    for (d in dados){
+        html += '<li>';
+        html += `   <h6 class="">${dados[d][0]}</h6>`;
+        if (typeof(dados[d][1]) === 'object'){
+            let itens = dados[d][1];
+            for (i in itens){
+                html += `   <p class="">${itens[i]}</p>`;
+            }
+        }else{
+            html += `   <p class="">${dados[d][1]}</p>`;
+        }
+        html += '</li>';
+    }
+    html += '        </ul>';
+    html += '    </div>';
+    html += '</div>';
+    document.querySelector('body').innerHTML += html;
 }
 
 function recarregarCaptcha(){
@@ -101,6 +126,8 @@ function enviarConsulta(cnpj, captcha){
                     document.getElementById('fundo_modal').remove();
                     if (callback_request !== (undefined, null) && typeof callback_request === 'function'){
                         callback_request.call(this, result.dados);
+                    }else{
+                        exibirResultadoConsulta(result.dados);
                     }
                 }else if (result.status === '400'){
                     document.getElementById('request_status').innerHTML= `${result.dados.msg_erro} - ${result.dados.ajuda_erro}`;
@@ -195,7 +222,7 @@ function verificarCnpj(cnpj){
     }
 }
 
-$('body').on('click', '#bt_ok_captcha, #bt_recarregar_captcha, #bt_cancel_captcha', function(event){
+$('body').on('click', '#bt_ok_captcha, #bt_recarregar_captcha, #bt_cancel_captcha, #fechar_modal_resultado', function(event){
     event.preventDefault();
     if (this.id == 'bt_ok_captcha'){
         enviarConsulta(document.getElementById('texto_cnpj').value, document.getElementById('texto_captcha').value);
@@ -204,6 +231,8 @@ $('body').on('click', '#bt_ok_captcha, #bt_recarregar_captcha, #bt_cancel_captch
     }else if (this.id == 'bt_cancel_captcha'){
         clearTimeout(recaptcha);
         document.getElementById('fundo_modal').remove();
+    } if(this.id == 'fechar_modal_resultado'){
+        document.getElementById('fundo_modal_resultado').remove();
     }
 });
 

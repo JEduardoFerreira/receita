@@ -1,0 +1,4 @@
+Django==4.0.2
+simplejson==3.17.6
+requests==2.27.1
+beautifulsoup4==4.10.0

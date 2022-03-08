@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Exemplos</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static '/img/jef.png' %}" />
+        <link rel="icon" type="image/png" href="{% static '/img/jef.png' %}" />
+        <link rel="apple-touch-icon" type="image/png" href="{% static '/img/jef.png' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/solid.css' %}" type="text/css" />        
+        <style rel="stylesheet" type="text/css">
+            footer {
+                position: fixed;
+                bottom: 0px;
+                width: 100%;
+                background-color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <main>           
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                    <span class="fs-4">Exemplos</span>
+                </a>
+            </header>
+
+            <div class="container col-xl-10 col-xxl-8 px-4 py-4">
+                <div class="row align-items-center g-lg-5 py-4">
+                    <div class="col-lg-7 text-center text-lg-start">
+                        <h1 class="display-4 fw-bold lh-1 mb-3">Consulta CNPJ</h1>
+                        <p class="col-lg-10 fs-4">Aqui será feita a Consulta ao Cadastro Nacional de Pessoas Jurídicas utiliando o próprio site da Receita Federal.</p>
+                    </div>
+                    <div class="col-md-10 mx-auto col-lg-5">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="cnpj" placeholder="Insira o CNPJ" mask="cnpj">
+                            <label for="cnpj">Insira o CNPJ</label>
+                        </div>
+                        <!--<div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>-->
+                        <button id="consultar_cnpj" class="w-100 btn btn-lg btn-primary" type="button" onclick="clickConsulta()">Consultar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 px-3 my-4 border-top">
+                <div class="col-md-5 d-flex align-items-center">
+                    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                        <svg class="bi" width="30" height="24">
+                            <use xlink:href="#bootstrap"></use>
+                        </svg>
+                    </a>
+                    <span class="text-muted">© {% now "Y" %} - José Eduardo Ferreira - Desenvolvedor FullStack</span>
+                </div>
+                <ul id="media-social" class="nav col-md-4 justify-content-end list-unstyled d-flex px-3">
+                    <li class="ms-3">
+                        <a class="text-muted" target="new_blank" href="https://www.linkedin.com/in/eduardo-ferreira-bb5981124/">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </li>
+                    <li class="ms-3">
+                        <a class="text-muted" href="https://github.com/JEduardoFerreira">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </li>
+                    <li class="ms-3">
+                        <a class="text-muted" href="https://www.instagram.com/joseduferreira/">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li class="ms-3">
+                        <a class="text-muted" href="https://www.facebook.com/eduardo.ferreira.5015/" target="new_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                </ul>
+            </footer>            
+        </main>
+    </body>
+    <script type="text/javascript" src="{% static 'js/receita.min.js' %}"></script>
+    <script>
+        function clickConsulta(){
+            let cnpj = document.getElementById('cnpj').value;
+            if (cnpj != ('', undefined) && isCNPJ(cnpj)){
+                consultarCnpj(cnpj);
+            }
+        }
+    </script>
+</html>

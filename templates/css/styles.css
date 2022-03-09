@@ -66,6 +66,8 @@
 
 #lista_dados_empresa>li>h6 {
     margin: 4px 0px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 #lista_dados_empresa>li>p {

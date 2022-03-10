@@ -17,37 +17,39 @@ function consultarCnpj(cnpj, callback){
 }
 
 function construirModal(cnpj){
-    let html = `
+    let divModal = document.createElement('div');
+    divModal.setAttribute('id', 'fundo_modal');
+    divModal.setAttribute('modal-receita', '');
+    divModal.innerHTML = `
         <div id="fundo_modal" modal-receita>
-            <div id="container_modal">
-                <div class="container_campos">
-                    <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" placeholder=" " value="${applyMask(cnpj, "cnpj")}"/>
-                    <span>CNPJ informado</span>
-                </div>
-                <div id="container_captcha">
-                    <img id="imagem_captcha"/>
-                </div>
-                <div class="container_campos">
-                    <input id="texto_captcha" name="texto_captcha" type="text" placeholder=" "/>
-                    <span>Forneça os caracteres da imagem acima</span>
-                </div>
-                <div id="container_mensagens">
-                    <span id="request_status"></span>
-                </div>
-                <div id="container_controles">
-                    <button type="button" id="bt_ok_captcha">
-                        Confirmar
-                    </button>
-                    <button type="button" id="bt_recarregar_captcha">
-                        Recarregar
-                    </button>
-                    <button type="button" id="bt_cancel_captcha">
-                        Voltar
-                    </button>
-                </div>
+        <div id="container_modal">
+            <div class="container_campos">
+                <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" placeholder=" " value="${applyMask(cnpj, "cnpj")}"/>
+                <span>CNPJ informado</span>
+            </div>
+            <div id="container_captcha">
+                <img id="imagem_captcha"/>
+            </div>
+            <div class="container_campos">
+                <input id="texto_captcha" name="texto_captcha" type="text" placeholder=" "/>
+                <span>Forneça os caracteres da imagem acima</span>
+            </div>
+            <div id="container_mensagens">
+                <span id="request_status"></span>
+            </div>
+            <div id="container_controles">
+                <button type="button" id="bt_ok_captcha">
+                    Confirmar
+                </button>
+                <button type="button" id="bt_recarregar_captcha">
+                    Recarregar
+                </button>
+                <button type="button" id="bt_cancel_captcha">
+                    Voltar
+                </button>
             </div>
         </div>`;
-        document.querySelector('body').innerHTML += html;
+        document.querySelector('body').append(divModal);
 }
 
 function exibirResultadoConsulta(dados){

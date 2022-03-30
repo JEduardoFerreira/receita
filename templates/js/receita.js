@@ -1,55 +1,74 @@
-const masks = {'cpf': '999.999.999-99', 'cnpj': '99.999.999/9999-99'}
+const masks = {'cpf': '999.999.999-99', 'cnpj': '99.999.999/9999-99', 'data': '99/99/9999',}
+const urls = {'cnpj':'/obter_captcha_cnpj', 'cpf': '/obter_captcha_cpf',}
 const erCNPJ = /[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/;
 const erCPF = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/;
 const erPont = /\W/igm; // Somente Pontuações/Simbolos.
+let tipo;  
 let hash_ima;
 let session_key;
 let callback_request;
 let recaptcha;
 
-
-function consultarCnpj(cnpj, callback){
-    callback_request = callback;
-    if (document.querySelector('*[modal-receita]') == null){
-        construirModal(cnpj);
-    }
-    recarregarCaptcha();
+switch (window.location.pathname){
+    case '/consulta_cnpj': tipo = 'cnpj'; break;
+    case '/consulta_cpf': tipo = 'cpf'; break;
 }
 
-function construirModal(cnpj){
+function consultarCnpj(cnpj, callback){
+    prepara(cnpj, callback);
+}
+
+function consultarCpf(cpf, callback){
+    prepara(cpf, callback);
+}
+
+function prepara(valor, callback){
+    callback_request = callback;
+    if (document.querySelector('*[modal-receita]') == null){
+        construirModal(valor);
+    }
+    recarregarCaptcha();    
+}
+
+function construirModal(valor){
+    let html = '';
     let divModal = document.createElement('div');
     divModal.setAttribute('id', 'fundo_modal');
     divModal.setAttribute('modal-receita', '');
-    divModal.innerHTML = `
-        <div id="fundo_modal" modal-receita>
-        <div id="container_modal">
-            <div class="container_campos">
-                <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" placeholder=" " value="${applyMask(cnpj, "cnpj")}"/>
-                <span>CNPJ informado</span>
-            </div>
-            <div id="container_captcha">
-                <img id="imagem_captcha"/>
-            </div>
-            <div class="container_campos">
-                <input id="texto_captcha" name="texto_captcha" type="text" placeholder=" "/>
-                <span>Forneça os caracteres da imagem acima</span>
-            </div>
-            <div id="container_mensagens">
-                <span id="request_status"></span>
-            </div>
-            <div id="container_controles">
-                <button type="button" id="bt_ok_captcha">
-                    Confirmar
-                </button>
-                <button type="button" id="bt_recarregar_captcha">
-                    Recarregar
-                </button>
-                <button type="button" id="bt_cancel_captcha">
-                    Voltar
-                </button>
-            </div>
-        </div>`;
-        document.querySelector('body').append(divModal);
+    html += '<div id="container_modal">';
+    if (tipo == 'cnpj'){
+        html += '    <div class="container_campos">';
+        html += `        <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" class="field-up float-field" placeholder=" " value="${applyMask(valor, "cnpj")}"/>`;
+        html += '        <span>CNPJ informado</span>';
+        html += '    </div>';
+    }else if (tipo == 'cpf'){
+        html += '    <div class="container_campos">';
+        html += `        <input type="text" id="texto_cpf" name="texto_cpf" mask="cpf" class="field-up float-field" placeholder=" " value="${applyMask(valor, "cpf")}"/>`;
+        html += '        <span>CPF informado</span>';
+        html += '    </div>';
+        html += '    <div class="container_campos">';
+        html += '        <input type="text" id="data_nascimento" name="data_nascimento" class="float-field" mask="data" placeholder=" "/>';
+        html += '        <span>Data de Nascimento</span>';
+        html += '    </div>';
+    }
+    html += '    <div id="container_captcha">';
+    html += '        <img id="imagem_captcha"/>';
+    html += '    </div>';
+    html += '    <div class="container_campos">';
+    html += '        <input type="text" id="texto_captcha" name="texto_captcha" class="field-bottom" placeholder=" "/>';
+    html += '        <span>Forneça os caracteres da imagem acima</span>';
+    html += '    </div>';
+    html += '    <div id="container_mensagens">';
+    html += '        <span id="request_status"></span>';
+    html += '    </div>';
+    html += '    <div id="container_controles">';
+    html += '        <button type="button" id="bt_ok_captcha">Confirmar</button>';
+    html += '        <button type="button" id="bt_recarregar_captcha">Recarregar</button>';
+    html += '        <button type="button" id="bt_cancel_captcha">Voltar</button>';
+    html += '    </div>';
+    html += '</div>';
+    divModal.innerHTML = html;
+    document.querySelector('body').append(divModal);
 }
 
 function exibirResultadoConsulta(dados){
@@ -89,7 +108,7 @@ function obterCaptcha(){
     $.ajax({
         type: "GET",
         data: {},
-        url: "/obter_captcha_cnpj",
+        url: urls[tipo],
         async: false,
         dataType: "json",
         success: function(result){
@@ -238,10 +257,16 @@ $('body').on('click', '#bt_ok_captcha, #bt_recarregar_captcha, #bt_cancel_captch
     }
 });
 
-$("body").on("keydown", "#texto_captcha", function(event){
+$("body").on("keydown", "#texto_captcha, #data_nascimento", function(event){
     let tecla = ( window.event ) ? event.keyCode : event.which;
-    if (tecla == 13 || tecla == 9){
-        document.getElementById('bt_ok_captcha').click();
+    if (this.id == 'texto_captcha'){
+        if (tecla == 13 || tecla == 9){
+            document.getElementById('bt_ok_captcha').click();
+        }
+    }else if (this.id == 'data_nascimento'){
+        if (tecla == 13 || tecla == 9){
+            document.getElementById('texto_captcha').focus();
+        }
     }
 });
 

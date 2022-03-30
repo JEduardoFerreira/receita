@@ -1,13 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# URL Base da Pagina de Consulta CNPJ da Receita Federal.
-URL_BASE = 'http://servicos.receita.fazenda.gov.br/Servicos/cnpjreva/'
+# URL Base da Pagina de Serviços da Receita Federal.
+URL_BASE = 'servicos.receita.fazenda.gov.br/Servicos/'
 
-# URL da Pagina de Consulta CNPJ da Receita Federal.
-URL_SOLICITACAO = f'{URL_BASE}Cnpjreva_Solicitacao_CS.asp'
+# URL Base dos Serviços de Consulta CNPJ.
+URL_BASE_CNPJ = f'http://{URL_BASE}cnpjreva/'
 
-# URL para Geração do Captcha da Consulta CNPJ da Receita Federal.
-URL_CAPTCHA = f'{URL_BASE}captcha/gerarCaptcha.asp'
+# URL da Pagina de Consulta CNPJ.
+URL_SOLICITACAO_CNPJ = f'{URL_BASE_CNPJ}Cnpjreva_Solicitacao_CS.asp'
 
-# URL de Validação da Consulta CNPJ da Receita Federal.
-URL_VALIDA = f'{URL_BASE}valida.asp'
+# URL para Geração do Captcha da Consulta CNPJ.
+URL_CAPTCHA_CNPJ = f'{URL_BASE_CNPJ}captcha/gerarCaptcha.asp'
+
+# URL de Validação da Consulta CNPJ.
+URL_VALIDA_CNPJ = f'{URL_BASE_CNPJ}valida.asp'
+
+
+
+# URL Base dos Serviços de Consulta CPF.
+URL_BASE_CPF = f'https://{URL_BASE}CPF/'
+
+# URL da Pagina de Consulta CPF.
+URL_SOLICITACAO_CPF = f'{URL_BASE_CPF}ConsultaSituacao/ConsultaPublicaSonoro.asp'
+
+# URL para Geração do Captcha da Consulta CPF.
+URL_CAPTCHA_CPF = f'{URL_BASE_CPF}captcha/gerarCaptcha.asp'
+
+# URL de Validação da Consulta CPF.
+URL_VALIDA_CPF = f'{URL_BASE_CPF}valida.asp'
+
+# 'ConsultaPublicaExibir.asp'

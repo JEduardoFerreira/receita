@@ -120,7 +120,6 @@ STATICFILES_DIRS = [
     os.path.join('exemplos', 'templates'),
     os.path.join(RECEITA_DIR, 'templates')
 ]
-print(STATICFILES_DIRS)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/x-icon" href="{% static '/img/jef.png' %}" />
+        <link rel="icon" type="image/png" href="{% static '/img/jef.png' %}" />
+        <link rel="apple-touch-icon" type="image/png" href="{% static '/img/jef.png' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/solid.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" />
+        {% block head %}
+        {% endblock %}
+    </head>
+    <body>
+        <main>   
+            {% include 'partials/header.html' %}
+            {% block body %}
+            {% endblock %}
+            {% include 'partials/footer.html' %}
+        </main>
+    </body>
+    <script type="text/javascript" src="{% static 'js/scripts.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/receita.min.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
+</html>

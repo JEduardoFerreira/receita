@@ -76,7 +76,6 @@
 
 #container_captcha{
     display: grid;
-    padding: 5px 0px;
     justify-content: center;
 }
 
@@ -100,6 +99,7 @@
     /*display: grid;*/
     display: flex;
     justify-content: center;
+    margin: 3px 0px;
 }
 
 .container_campos>input{
@@ -121,16 +121,16 @@
     padding-bottom: 1.25px;
 }
 
-.container_campos>#texto_cnpj{
+.field-up{
     border-radius: 5px 5px 0px 0px;
 }
 
-.container_campos>#texto_captcha{
+.field-bottom{
     border-radius: 0px 0px 5px 5px;
 }
 
-.container_campos>#texto_cnpj:not(:placeholder-shown)~span,
-.container_campos>#texto_cnpj:focus~span{
+.float-field:not(:placeholder-shown)~span,
+.float-field:focus~span{
     opacity: .65;
     transform: scale(.85) translateY(-.5rem) translateX(1rem);
 }
@@ -151,6 +151,7 @@
     transition: opacity .1s ease-in-out,transform .1s ease-in-out;
     font-family: system-ui;
     font-weight: 600;
+    font-size: 15px;
 }
 
 #container_controles{

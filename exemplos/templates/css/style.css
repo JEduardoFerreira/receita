@@ -1,0 +1,10 @@
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.container-desc{
+    min-height: 150px;
+}

@@ -3,22 +3,20 @@ const urls = {'cnpj':'/obter_captcha_cnpj', 'cpf': '/obter_captcha_cpf',}
 const erCNPJ = /[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/;
 const erCPF = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/;
 const erPont = /\W/igm; // Somente Pontuações/Simbolos.
-let tipo;  
+let tipo_cons;  
 let hash_ima;
 let session_key;
 let callback_request;
 let recaptcha;
 
-switch (window.location.pathname){
-    case '/consulta_cnpj': tipo = 'cnpj'; break;
-    case '/consulta_cpf': tipo = 'cpf'; break;
-}
 
 function consultarCnpj(cnpj, callback){
+    tipo_cons = 'cnpj';
     prepara(cnpj, callback);
 }
 
 function consultarCpf(cpf, callback){
+    tipo_cons = 'cpf'
     prepara(cpf, callback);
 }
 
@@ -36,12 +34,12 @@ function construirModal(valor){
     divModal.setAttribute('id', 'fundo_modal');
     divModal.setAttribute('modal-receita', '');
     html += '<div id="container_modal">';
-    if (tipo == 'cnpj'){
+    if (tipo_cons == 'cnpj'){
         html += '    <div class="container_campos">';
         html += `        <input type="text" id="texto_cnpj" name="texto_cnpj" mask="cnpj" class="field-up float-field" placeholder=" " value="${applyMask(valor, "cnpj")}"/>`;
         html += '        <span>CNPJ informado</span>';
         html += '    </div>';
-    }else if (tipo == 'cpf'){
+    }else if (tipo_cons == 'cpf'){
         html += '    <div class="container_campos">';
         html += `        <input type="text" id="texto_cpf" name="texto_cpf" mask="cpf" class="field-up float-field" placeholder=" " value="${applyMask(valor, "cpf")}"/>`;
         html += '        <span>CPF informado</span>';
@@ -108,7 +106,7 @@ function obterCaptcha(){
     $.ajax({
         type: "GET",
         data: {},
-        url: urls[tipo],
+        url: urls[tipo_cons],
         async: false,
         dataType: "json",
         success: function(result){
